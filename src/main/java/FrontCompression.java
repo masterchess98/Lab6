@@ -41,11 +41,18 @@ public class FrontCompression {
             return "";
         }
 
-        /*
-         * Complete this function.
-         */
+        String[] list = corpus.split("\n");
+        String compressed = "";
+        compressed += "0 " + list[0] + "\n";
 
-        return "";
+        for (int i = 1; i < list.length; i++) {
+            compressed += longestPrefix(list[i], list[i - 1]) + " "
+                    + list[i].substring(longestPrefix(list[i], list[i - 1]), list[i].length())
+                    + "\n";
+        }
+        System.out.print(compressed);
+
+        return compressed;
     }
 
     /**
@@ -63,12 +70,25 @@ public class FrontCompression {
         } else if (corpus.length() == 0) {
             return "";
         }
+        int counter = 0;
 
-        /*
-         * Complete this function.
-         */
+        String[] list = corpus.split("\n");
+        String decompressed = list[0];
+        decompressed = list[0].substring(1, list[0].length()) + "\n";
+        String currentString = "";
+        String previousString = list[0];
+        for (int i = 1; i < list.length; i++) {
+            currentString = list[i];
+            String[] numLet = previousString.split(" ");
+            counter = Integer.valueOf(numLet[0]);
+            decompressed += numLet[1].substring(0, counter) + currentString.substring(Integer.valueOf(numLet[0]), currentString.length()) + "\n";
+            previousString = currentString;
 
-        return "";
+        }
+        decompressed = decompressed.substring(1, decompressed.length());
+        System.out.println(decompressed);
+
+        return decompressed;
     }
 
     /**
@@ -79,10 +99,20 @@ public class FrontCompression {
      * @return the length of the common prefix between the two strings
      */
     private static int longestPrefix(final String firstString, final String secondString) {
-        /*
-         * Complete this function.
-         */
-        return 0;
+        int count = 0;
+        int length = 0;
+        if (firstString.length() <= secondString.length()) {
+            length = firstString.length();
+        } else {
+            length = secondString.length();
+        }
+        for (int i = 0; i < length; i++) {
+            if (firstString.charAt(i) != secondString.charAt(i)) {
+                break;
+            }
+            count++;
+        }
+        return count;
     }
 
     /**
